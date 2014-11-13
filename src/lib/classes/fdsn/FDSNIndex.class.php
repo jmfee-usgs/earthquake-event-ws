@@ -299,40 +299,42 @@ class FDSNIndex {
 			$params[] = $query->eventid;
 		}
 
-		// latest version of product
-		$where[] = ' NOT EXISTS (' .
-				'SELECT * FROM productSummary' .
-				' WHERE source=ps.source' .
-				' AND type=ps.type' .
-				' AND code=ps.code' .
-				' AND updateTime>ps.updateTime' .
-				')';
+		if ($query->includesuperseded !== true) {
+			// latest version of product
+			$where[] = ' NOT EXISTS (' .
+					'SELECT * FROM productSummary' .
+					' WHERE source=ps.source' .
+					' AND type=ps.type' .
+					' AND code=ps.code' .
+					' AND updateTime>ps.updateTime' .
+					')';
 
-		// limit join to most preferred origin product for event
-		$where[] = ' NOT EXISTS (' .
-			'SELECT * FROM productSummary mp' .
-			// in same event
-			' WHERE mp.eventId=ps.eventId' .
-			// with same product type
-			' AND mp.type=ps.type' .
-			// and not deleted
-			" AND upper(mp.status)<>'DELETE'" .
-			// limit to same catalog if searching by catalog
-			($query->catalog !== null ? ' AND mp.eventSource=ps.eventSource' : '') .
-			// and more preferred
-			' AND (' .
-				'mp.preferred > ps.preferred' .
-				' OR (mp.preferred=ps.preferred and mp.updateTime>ps.updateTime)' .
-			')' .
-			// and is the latest version of itself
-			' AND NOT EXISTS (' .
-				'select * from productSummary' .
-				' where source=mp.source' .
-				' and type=mp.type' .
-				' and code=mp.code' .
-				' and updateTime>mp.updateTime' .
-			')' .
-		')';
+			// limit join to most preferred origin product for event
+			$where[] = ' NOT EXISTS (' .
+				'SELECT * FROM productSummary mp' .
+				// in same event
+				' WHERE mp.eventId=ps.eventId' .
+				// with same product type
+				' AND mp.type=ps.type' .
+				// and not deleted
+				" AND upper(mp.status)<>'DELETE'" .
+				// limit to same catalog if searching by catalog
+				($query->catalog !== null ? ' AND mp.eventSource=ps.eventSource' : '') .
+				// and more preferred
+				' AND (' .
+					'mp.preferred > ps.preferred' .
+					' OR (mp.preferred=ps.preferred and mp.updateTime>ps.updateTime)' .
+				')' .
+				// and is the latest version of itself
+				' AND NOT EXISTS (' .
+					'select * from productSummary' .
+					' where source=mp.source' .
+					' and type=mp.type' .
+					' and code=mp.code' .
+					' and updateTime>mp.updateTime' .
+				')' .
+			')';
+		}
 
 		if ($query->catalog !== null) {
 			// additional parameters need summary tables

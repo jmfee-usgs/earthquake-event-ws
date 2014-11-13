@@ -619,8 +619,11 @@ class FDSNEventWebService {
 			if ($query->includedeleted) {
 				$this->error(self::BAD_REQUEST, 'Cannot use includedeleted parameter unless format is geojson.');
 			}
-			if ($query->includesuperseded) {
-				$this->error(self::BAD_REQUEST, 'Cannot use includesuperseded parameter unless format is geojson.');
+		}
+
+		if ($query->includesuperseded) {
+			if ($query->format !== 'geojson' && $query->format !== 'csv') {
+				$this->error(self::BAD_REQUEST, 'Cannot use includesuperseded parameter unless format is csv or geojson.');
 			}
 		}
 
@@ -628,9 +631,6 @@ class FDSNEventWebService {
 		if ($query->eventid === null) {
 			if ($query->includedeleted) {
 				$this->error(self::BAD_REQUEST, 'Cannot use includedeleted parameter without eventid parameter.');
-			}
-			if ($query->includesuperseded) {
-				$this->error(self::BAD_REQUEST, 'Cannot use includesuperseded parameter without eventid parameter.');
 			}
 		}
 
