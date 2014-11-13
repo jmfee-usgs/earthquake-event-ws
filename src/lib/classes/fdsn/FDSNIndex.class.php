@@ -345,6 +345,8 @@ class FDSNIndex {
 
 			$where[] = 'ps.eventSource = ?';
 			$params[] = $query->catalog;
+		} else if ($query->format === 'csv') {
+			$updatedColumn = 'ps.updateTime';
 		}
 
 

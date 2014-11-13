@@ -26,7 +26,7 @@ class CSVFeed extends AbstractFeed {
 			$event['standard_error'],
 			$event['eventSource'],
 			$event['eventSource'] . $event['eventSourceCode'],
-			$this->formatter->formatDateIso($event['eventUpdateTime']),
+			$this->formatter->formatDateIso($event['updateTime']),
 			'"' . str_replace('"', '""', $event['region']) . '"',
 			$event['event_type']
 		)) . "\n";
