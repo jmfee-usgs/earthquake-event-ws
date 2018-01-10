@@ -70,16 +70,16 @@ RewriteCond %{QUERY_STRING} ^.+
 RewriteRule ^' . $FEED_PATH . '/(summary|detail)/.* - [F,L]
 
 # detail is EVENTID.FORMAT
-RewriteRule ^' . $FEED_PATH . '/detail/([^/]+)\.([^/\.]+)$ ' . $FEED_PATH .
+RewriteRule ^' . $FEED_PATH . '/detail/([^/]+)\.([a-z]+)$ ' . $FEED_PATH .
     '/detail.php?eventid=$1&format=$2 [L,PT]
 # summary is PARAMS.FORMAT
-RewriteRule ^' . $FEED_PATH . '/summary/([^/]+)\.([^/\.]+)$ ' . $FEED_PATH .
+RewriteRule ^' . $FEED_PATH . '/summary/([^/]+)\.([a-z]+)$ ' . $FEED_PATH .
     '/summary.php?params=$1&format=$2 [L,PT]
 
 
 # fdsn event webservice
 RewriteRule ^' . $FDSN_PATH . '$ ' . $FDSN_PATH . '/ [R=301,L]
-RewriteRule ^' . $FDSN_PATH . '/query\.([^/]*)$ ' . $FEED_PATH .
+RewriteRule ^' . $FDSN_PATH . '/query\.([a-z]+)$ ' . $FEED_PATH .
     '/fdsn.php?method=query&format=$1 [L,QSA,PT]
 RewriteRule ^' . $FDSN_PATH . '/([^/]*)$ ' . $FEED_PATH .
     '/fdsn.php?method=$1 [L,QSA,PT]
