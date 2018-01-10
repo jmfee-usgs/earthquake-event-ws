@@ -68,6 +68,8 @@ RewriteRule ^' . $SEARCH_PATH . '/(js|css|lib)/(.*) ' . $FEED_PATH .
 # forbid cache busting query strings
 RewriteCond %{QUERY_STRING} ^.+
 RewriteRule ^' . $FEED_PATH . '/(summary|detail)/.* - [F,L]
+# forbid direct requests to detail.php and summary.php
+RewriteRule ^' . $FEED_PATH . '/(summary|detail)\.php [F,L]
 
 # detail is EVENTID.FORMAT
 RewriteRule ^' . $FEED_PATH . '/detail/([^/]+)\.([a-z]+)$ ' . $FEED_PATH .
